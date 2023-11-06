@@ -14,7 +14,7 @@ export const createSales = async (
       req.body;
     const { userID } = req.params;
     const user = await userModel.findById(userID);
-    const admin = await userModel.findOne({ businessName: user?.businessName });
+    const admin = await adminModel.findOne({ businessName: user?.businessName });
 
     if (user?.businessName === admin?.businessName) {
       const sales = await salesModel.create({
