@@ -10,17 +10,11 @@ export const createSales = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const {
-      productName,
-      price,
-      quantity,
-      description,
-      paymentMethod,
-      businessName,
-    } = req.body;
+    const { productName, price, quantity, description, paymentMethod } =
+      req.body;
     const { userID } = req.params;
     const user = await userModel.findById(userID);
-    const admin = await userModel.findOne({ businessName });
+    const admin = await userModel.findOne({ businessName: user?.businessName });
 
     if (user?.businessName === admin?.businessName) {
       const sales = await salesModel.create({

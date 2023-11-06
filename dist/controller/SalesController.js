@@ -20,10 +20,10 @@ const salesModel_1 = __importDefault(require("../model/salesModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const createSales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productName, price, quantity, description, paymentMethod, businessName, } = req.body;
+        const { productName, price, quantity, description, paymentMethod } = req.body;
         const { userID } = req.params;
         const user = yield userModel_1.default.findById(userID);
-        const admin = yield userModel_1.default.findOne({ businessName });
+        const admin = yield userModel_1.default.findOne({ businessName: user === null || user === void 0 ? void 0 : user.businessName });
         if ((user === null || user === void 0 ? void 0 : user.businessName) === (admin === null || admin === void 0 ? void 0 : admin.businessName)) {
             const sales = yield salesModel_1.default.create({
                 productName,
