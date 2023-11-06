@@ -8,7 +8,7 @@ import crypto from "crypto";
 import adminModel from "../model/adminModel";
 import userModel from "../model/userModel";
 
-const url: string = `http://localhost:5173`;
+const url: string = `https://sale-n-earn.web.app`;
 
 const G_ID: string = environment.G_ID;
 const G_SECRET: string = environment.G_SECRET;
