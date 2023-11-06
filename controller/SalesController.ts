@@ -10,12 +10,19 @@ export const createSales = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { productName, price, quantity, description, paymentMethod } =
-      req.body;
+    const {
+      productName,
+      price,
+      quantity,
+      description,
+      paymentMethod,
+      businessName,
+    } = req.body;
     const { userID } = req.params;
     const user = await userModel.findById(userID);
+    const admin = await userModel.findOne({ businessName });
 
-    if (user?.businessName) {
+    if (user?.businessName === admin?.businessName) {
       const sales = await salesModel.create({
         productName,
         price,
@@ -28,6 +35,8 @@ export const createSales = async (
 
       user?.sales.push(new mongoose.Types.ObjectId(sales?._id));
       user?.save();
+      admin?.sales.push(new mongoose.Types.ObjectId(sales?._id));
+      admin?.save();
 
       return res.status(HTTP.CREATED).json({
         message: "Sales is written",

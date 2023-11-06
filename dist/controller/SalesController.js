@@ -20,10 +20,11 @@ const salesModel_1 = __importDefault(require("../model/salesModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const createSales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productName, price, quantity, description, paymentMethod } = req.body;
+        const { productName, price, quantity, description, paymentMethod, businessName, } = req.body;
         const { userID } = req.params;
         const user = yield userModel_1.default.findById(userID);
-        if (user === null || user === void 0 ? void 0 : user.businessName) {
+        const admin = yield userModel_1.default.findOne({ businessName });
+        if ((user === null || user === void 0 ? void 0 : user.businessName) === (admin === null || admin === void 0 ? void 0 : admin.businessName)) {
             const sales = yield salesModel_1.default.create({
                 productName,
                 price,
@@ -35,6 +36,8 @@ const createSales = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
             user === null || user === void 0 ? void 0 : user.sales.push(new mongoose_1.default.Types.ObjectId(sales === null || sales === void 0 ? void 0 : sales._id));
             user === null || user === void 0 ? void 0 : user.save();
+            admin === null || admin === void 0 ? void 0 : admin.sales.push(new mongoose_1.default.Types.ObjectId(sales === null || sales === void 0 ? void 0 : sales._id));
+            admin === null || admin === void 0 ? void 0 : admin.save();
             return res.status(errorSetUp_1.HTTP.CREATED).json({
                 message: "Sales is written",
                 data: sales,
